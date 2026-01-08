@@ -3,7 +3,7 @@
  * 
  * Usage:
  *   import { build } from 'esbuild';
- *   import { despiaOfflineEsbuild } from '@despia/offline/esbuild';
+ *   import { despiaOfflineEsbuild } from '@despia/local/esbuild';
  *   
  *   await build({
  *     plugins: [despiaOfflineEsbuild({ outDir: 'dist' })]

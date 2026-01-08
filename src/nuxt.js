@@ -3,7 +3,7 @@
  * 
  * Usage in nuxt.config.js:
  *   export default {
- *     modules: ['@despia/offline/nuxt'],
+ *     modules: ['@despia/local/nuxt'],
  *     despiaOffline: {
  *       entryHtml: 'index.html'
  *     }
@@ -11,7 +11,7 @@
  * 
  * Or use as a Nuxt module in modules/ directory:
  *   // modules/despia-offline.js
- *   import DespiaOfflineModule from '@despia/offline/nuxt';
+ *   import DespiaOfflineModule from '@despia/local/nuxt';
  *   export default DespiaOfflineModule;
  */
 

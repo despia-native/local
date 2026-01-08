@@ -3,7 +3,7 @@
  * 
  * Usage in remix.config.js or vite.config.js:
  *   import { remix } from '@remix-run/dev';
- *   import { despiaOfflineRemix } from '@despia/offline/remix';
+ *   import { despiaOfflineRemix } from '@despia/local/remix';
  *   
  *   export default {
  *     plugins: [

@@ -3,7 +3,7 @@
  * 
  * Usage in astro.config.mjs:
  *   import { defineConfig } from 'astro/config';
- *   import despiaOffline from '@despia/offline/astro';
+ *   import despiaOffline from '@despia/local/astro';
  *   
  *   export default defineConfig({
  *     integrations: [

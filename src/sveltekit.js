@@ -3,7 +3,7 @@
  * 
  * Usage in vite.config.js:
  *   import { sveltekit } from '@sveltejs/kit/vite';
- *   import { despiaOfflineSvelteKit } from '@despia/offline/sveltekit';
+ *   import { despiaOfflineSvelteKit } from '@despia/local/sveltekit';
  *   
  *   export default {
  *     plugins: [

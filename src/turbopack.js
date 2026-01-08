@@ -11,7 +11,7 @@ export function despiaOfflineTurbopack(options = {}) {
 
   // Turbopack is used by Next.js, so we recommend using the Next.js integration
   // This is kept for potential future Turbopack-specific features
-  console.warn('⚠ Turbopack: Use @despia/offline/next instead for Next.js projects');
+  console.warn('⚠ Turbopack: Use @despia/local/next instead for Next.js projects');
   
   return {
     name: 'despia-offline-turbopack',

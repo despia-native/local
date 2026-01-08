@@ -1,5 +1,5 @@
 /**
- * Main entry point for @despia/offline
+ * Main entry point for @despia/local
  * Re-exports core functionality and all plugins
  */
 

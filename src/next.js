@@ -2,7 +2,7 @@
  * Next.js integration for generating despia/local.json manifest
  * 
  * Usage in next.config.js:
- *   const withDespiaOffline = require('@despia/offline/next');
+ *   const withDespiaOffline = require('@despia/local/next');
  *   module.exports = withDespiaOffline({
  *     entryHtml: 'index.html',
  *     outDir: '.next' // or 'out' for static export
@@ -11,7 +11,7 @@
  *   });
  * 
  * Or use the webpack plugin approach:
- *   const DespiaOfflinePlugin = require('@despia/offline/webpack');
+ *   const DespiaOfflinePlugin = require('@despia/local/webpack');
  *   module.exports = {
  *     webpack: (config) => {
  *       config.plugins.push(new DespiaOfflinePlugin({ outDir: '.next' }));
