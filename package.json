@@ -1,0 +1,98 @@
+{
+  "name": "@despia/offline",
+  "version": "1.0.0",
+  "description": "Universal build plugin to generate despia/local.json manifest for offline caching in Despia web-native apps. Supports Vite, Webpack, Rollup, Next.js, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more.",
+  "type": "module",
+  "main": "./src/core.js",
+  "bin": {
+    "despia-offline": "./generate-offline-manifest.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/core.js",
+      "require": "./src/core.cjs"
+    },
+    "./vite": {
+      "import": "./src/vite.js"
+    },
+    "./webpack": {
+      "import": "./src/webpack.js",
+      "require": "./src/webpack.cjs"
+    },
+    "./rollup": {
+      "import": "./src/rollup.js"
+    },
+    "./next": {
+      "import": "./src/next.js",
+      "require": "./src/next.cjs"
+    },
+    "./nuxt": {
+      "import": "./src/nuxt.js"
+    },
+    "./sveltekit": {
+      "import": "./src/sveltekit.js"
+    },
+    "./astro": {
+      "import": "./src/astro.js"
+    },
+    "./remix": {
+      "import": "./src/remix.js"
+    },
+    "./esbuild": {
+      "import": "./src/esbuild.js"
+    },
+    "./parcel": {
+      "import": "./src/parcel.js"
+    },
+    "./turbopack": {
+      "import": "./src/turbopack.js"
+    },
+    "./cli": {
+      "import": "./generate-offline-manifest.js"
+    }
+  },
+  "files": [
+    "src",
+    "generate-offline-manifest.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "generate-offline": "node generate-offline-manifest.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "despia",
+    "offline",
+    "manifest",
+    "build",
+    "plugin",
+    "vite",
+    "webpack",
+    "rollup",
+    "nextjs",
+    "nuxt",
+    "sveltekit",
+    "astro",
+    "remix",
+    "esbuild",
+    "parcel",
+    "turbopack",
+    "bundler",
+    "pwa",
+    "caching"
+  ],
+  "author": "Despia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/despia/offline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/despia/offline/issues"
+  },
+  "homepage": "https://github.com/despia/offline#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
