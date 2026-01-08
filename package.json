@@ -86,12 +86,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/despia/local.git"
+    "url": "https://github.com/despia-native/local.git"
   },
   "bugs": {
-    "url": "https://github.com/despia/local/issues"
+    "url": "https://github.com/despia-native/local/issues"
   },
-  "homepage": "https://github.com/despia/local#readme",
+  "homepage": "https://github.com/despia-native/local#readme",
   "engines": {
     "node": ">=14.0.0"
   }
