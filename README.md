@@ -353,12 +353,12 @@ npx despia-local [outputDir] [entryHtml]
 ```javascript
 // vite.config.js
 import { defineConfig } from 'vite';
-import { despiaOfflinePlugin } from '@despia/local/vite';
+import { despiaLocalPlugin } from '@despia/local/vite';
 
 export default defineConfig({
   plugins: [
     // ... your other plugins
-    despiaOfflinePlugin({
+    despiaLocalPlugin({
       outDir: 'dist',        // optional, default: 'dist'
       entryHtml: 'index.html' // optional, default: 'index.html'
     })
@@ -378,13 +378,13 @@ export default defineConfig({
 
 ```javascript
 // webpack.config.js
-const DespiaOfflinePlugin = require('@despia/local/webpack');
+const DespiaLocalPlugin = require('@despia/local/webpack');
 
 module.exports = {
   // ... your config
   plugins: [
     // ... your other plugins
-    new DespiaOfflinePlugin({
+    new DespiaLocalPlugin({
       outDir: 'dist',        // optional, default: 'dist'
       entryHtml: 'index.html' // optional, default: 'index.html'
     })
@@ -402,13 +402,13 @@ module.exports = {
 
 ```javascript
 // rollup.config.js
-import { despiaOffline } from '@despia/local/rollup';
+import { despiaLocal } from '@despia/local/rollup';
 
 export default {
   // ... your config
   plugins: [
     // ... your other plugins
-    despiaOffline({
+    despiaLocal({
       outDir: 'dist',
       entryHtml: 'index.html'
     })
@@ -420,9 +420,9 @@ export default {
 
 ```javascript
 // next.config.js
-const withDespiaOffline = require('@despia/local/next');
+const withDespiaLocal = require('@despia/local/next');
 
-module.exports = withDespiaOffline({
+module.exports = withDespiaLocal({
   entryHtml: 'index.html',
   outDir: '.next' // or 'out' for static export
 })({
@@ -434,9 +434,9 @@ module.exports = withDespiaOffline({
 
 ```javascript
 // next.config.js
-const withDespiaOffline = require('@despia/local/next');
+const withDespiaLocal = require('@despia/local/next');
 
-module.exports = withDespiaOffline({
+module.exports = withDespiaLocal({
   outDir: 'out', // Next.js static export directory
   entryHtml: 'index.html'
 })({
@@ -449,12 +449,12 @@ module.exports = withDespiaOffline({
 
 ```javascript
 // next.config.js
-const DespiaOfflinePlugin = require('@despia/local/webpack');
+const DespiaLocalPlugin = require('@despia/local/webpack');
 
 module.exports = {
   webpack: (config) => {
     config.plugins.push(
-      new DespiaOfflinePlugin({ outDir: '.next' })
+      new DespiaLocalPlugin({ outDir: '.next' })
     );
     return config;
   }
@@ -467,7 +467,7 @@ module.exports = {
 // nuxt.config.js
 export default {
   modules: ['@despia/local/nuxt'],
-  despiaOffline: {
+  despiaLocal: {
     entryHtml: 'index.html'
   }
 }
@@ -476,9 +476,9 @@ export default {
 **Or as a local module:**
 
 ```javascript
-// modules/despia-offline.js
-import DespiaOfflineModule from '@despia/local/nuxt';
-export default DespiaOfflineModule;
+// modules/despia-local.js
+import DespiaLocalModule from '@despia/local/nuxt';
+export default DespiaLocalModule;
 ```
 
 ### SvelteKit
@@ -486,12 +486,12 @@ export default DespiaOfflineModule;
 ```javascript
 // vite.config.js
 import { sveltekit } from '@sveltejs/kit/vite';
-import { despiaOfflineSvelteKit } from '@despia/local/sveltekit';
+import { despiaLocalSvelteKit } from '@despia/local/sveltekit';
 
 export default {
   plugins: [
     sveltekit(),
-    despiaOfflineSvelteKit({
+    despiaLocalSvelteKit({
       entryHtml: 'index.html'
     })
   ]
@@ -503,11 +503,11 @@ export default {
 ```javascript
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
-import despiaOffline from '@despia/local/astro';
+import despiaLocal from '@despia/local/astro';
 
 export default defineConfig({
   integrations: [
-    despiaOffline({
+    despiaLocal({
       entryHtml: 'index.html',
       outDir: 'dist'
     })
@@ -520,12 +520,12 @@ export default defineConfig({
 ```javascript
 // vite.config.js (Remix uses Vite)
 import { remix } from '@remix-run/dev';
-import { despiaOfflineRemix } from '@despia/local/remix';
+import { despiaLocalRemix } from '@despia/local/remix';
 
 export default {
   plugins: [
     remix(),
-    despiaOfflineRemix({
+    despiaLocalRemix({
       entryHtml: 'index.html',
       outDir: 'build/client'
     })
@@ -537,13 +537,13 @@ export default {
 
 ```javascript
 import { build } from 'esbuild';
-import { despiaOfflineEsbuild } from '@despia/local/esbuild';
+import { despiaLocalEsbuild } from '@despia/local/esbuild';
 
 await build({
   entryPoints: ['src/index.js'],
   outdir: 'dist',
   plugins: [
-    despiaOfflineEsbuild({
+    despiaLocalEsbuild({
       outDir: 'dist',
       entryHtml: 'index.html'
     })
@@ -618,12 +618,12 @@ The generated `despia/local.json` file contains a sorted JSON array of root-rela
 // vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { despiaOfflinePlugin } from '@despia/local/vite';
+import { despiaLocalPlugin } from '@despia/local/vite';
 
 export default defineConfig({
   plugins: [
     react(),
-    despiaOfflinePlugin()
+    despiaLocalPlugin()
   ]
 });
 ```
@@ -634,12 +634,12 @@ export default defineConfig({
 // vite.config.js
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { despiaOfflinePlugin } from '@despia/local/vite';
+import { despiaLocalPlugin } from '@despia/local/vite';
 
 export default defineConfig({
   plugins: [
     vue(),
-    despiaOfflinePlugin()
+    despiaLocalPlugin()
   ]
 });
 ```
@@ -668,11 +668,11 @@ export default defineConfig({
 
 ```javascript
 // webpack.config.js
-const DespiaOfflinePlugin = require('@despia/local/webpack');
+const DespiaLocalPlugin = require('@despia/local/webpack');
 
 module.exports = {
   plugins: [
-    new DespiaOfflinePlugin({ outDir: 'dist' })
+    new DespiaLocalPlugin({ outDir: 'dist' })
   ]
 };
 ```
@@ -683,12 +683,12 @@ module.exports = {
 // vite.config.js
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { despiaOfflinePlugin } from '@despia/local/vite';
+import { despiaLocalPlugin } from '@despia/local/vite';
 
 export default defineConfig({
   plugins: [
     svelte(),
-    despiaOfflinePlugin()
+    despiaLocalPlugin()
   ]
 });
 ```

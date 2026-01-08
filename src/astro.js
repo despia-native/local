@@ -3,11 +3,11 @@
  * 
  * Usage in astro.config.mjs:
  *   import { defineConfig } from 'astro/config';
- *   import despiaOffline from '@despia/local/astro';
+ *   import despiaLocal from '@despia/local/astro';
  *   
  *   export default defineConfig({
  *     integrations: [
- *       despiaOffline({ entryHtml: 'index.html' })
+ *       despiaLocal({ entryHtml: 'index.html' })
  *     ]
  *   });
  */
@@ -15,11 +15,11 @@
 import { generateManifest } from './core.js';
 import { fileURLToPath } from 'url';
 
-export default function despiaOfflineIntegration(options = {}) {
+export default function despiaLocalIntegration(options = {}) {
   const { entryHtml = 'index.html', outDir = 'dist' } = options;
 
   return {
-    name: 'despia-offline',
+    name: 'despia-local',
     hooks: {
       'astro:build:done': async ({ dir }) => {
         // Astro provides dir as a URL object, convert to path

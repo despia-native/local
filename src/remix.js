@@ -3,23 +3,23 @@
  * 
  * Usage in remix.config.js or vite.config.js:
  *   import { remix } from '@remix-run/dev';
- *   import { despiaOfflineRemix } from '@despia/local/remix';
+ *   import { despiaLocalRemix } from '@despia/local/remix';
  *   
  *   export default {
  *     plugins: [
  *       remix(),
- *       despiaOfflineRemix({ entryHtml: 'index.html' })
+ *       despiaLocalRemix({ entryHtml: 'index.html' })
  *     ]
  *   }
  */
 
 import { generateManifest } from './core.js';
 
-export function despiaOfflineRemix(options = {}) {
+export function despiaLocalRemix(options = {}) {
   const { entryHtml = 'index.html', outDir = 'build/client' } = options;
 
   return {
-    name: 'despia-offline-remix',
+    name: 'despia-local-remix',
     apply: 'build',
     buildEnd() {
       // Remix outputs to build/client for client assets

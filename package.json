@@ -5,26 +5,23 @@
   "type": "module",
   "main": "./src/core.js",
   "bin": {
-    "despia-local": "./generate-offline-manifest.js"
+    "despia-local": "generate-offline-manifest.js"
   },
   "exports": {
     ".": {
-      "import": "./src/core.js",
-      "require": "./src/core.cjs"
+      "import": "./src/core.js"
     },
     "./vite": {
       "import": "./src/vite.js"
     },
     "./webpack": {
-      "import": "./src/webpack.js",
-      "require": "./src/webpack.cjs"
+      "import": "./src/webpack.js"
     },
     "./rollup": {
       "import": "./src/rollup.js"
     },
     "./next": {
-      "import": "./src/next.js",
-      "require": "./src/next.cjs"
+      "import": "./src/next.js"
     },
     "./nuxt": {
       "import": "./src/nuxt.js"
@@ -86,7 +83,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/despia-native/local.git"
+    "url": "git+https://github.com/despia-native/local.git"
   },
   "bugs": {
     "url": "https://github.com/despia-native/local/issues"

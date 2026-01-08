@@ -4,7 +4,7 @@
 
 import { generateManifest } from './core.js';
 
-class DespiaOfflinePlugin {
+class DespiaLocalPlugin {
   constructor(options = {}) {
     this.options = {
       outDir: options.outDir || 'dist',
@@ -14,7 +14,7 @@ class DespiaOfflinePlugin {
   }
 
   apply(compiler) {
-    const pluginName = 'DespiaOfflinePlugin';
+    const pluginName = 'DespiaLocalPlugin';
     
     compiler.hooks.afterEmit.tapAsync(pluginName, (compilation, callback) => {
       // Get output path from webpack compiler
@@ -53,4 +53,4 @@ class DespiaOfflinePlugin {
   }
 }
 
-export default DespiaOfflinePlugin;
+export default DespiaLocalPlugin;

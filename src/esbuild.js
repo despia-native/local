@@ -3,21 +3,21 @@
  * 
  * Usage:
  *   import { build } from 'esbuild';
- *   import { despiaOfflineEsbuild } from '@despia/local/esbuild';
+ *   import { despiaLocalEsbuild } from '@despia/local/esbuild';
  *   
  *   await build({
- *     plugins: [despiaOfflineEsbuild({ outDir: 'dist' })]
+ *     plugins: [despiaLocalEsbuild({ outDir: 'dist' })]
  *   });
  */
 
 import { generateManifest } from './core.js';
 import { relative } from 'path';
 
-export function despiaOfflineEsbuild(options = {}) {
+export function despiaLocalEsbuild(options = {}) {
   const { outDir = 'dist', entryHtml = 'index.html' } = options;
 
   return {
-    name: 'despia-offline',
+    name: 'despia-local',
     setup(build) {
       build.onEnd(async (result) => {
         if (result.errors.length > 0) {

@@ -3,23 +3,23 @@
  * 
  * Usage in vite.config.js:
  *   import { sveltekit } from '@sveltejs/kit/vite';
- *   import { despiaOfflineSvelteKit } from '@despia/local/sveltekit';
+ *   import { despiaLocalSvelteKit } from '@despia/local/sveltekit';
  *   
  *   export default {
  *     plugins: [
  *       sveltekit(),
- *       despiaOfflineSvelteKit({ entryHtml: 'index.html' })
+ *       despiaLocalSvelteKit({ entryHtml: 'index.html' })
  *     ]
  *   }
  */
 
 import { generateManifest } from './core.js';
 
-export function despiaOfflineSvelteKit(options = {}) {
+export function despiaLocalSvelteKit(options = {}) {
   const { entryHtml = 'index.html' } = options;
 
   return {
-    name: 'despia-offline-sveltekit',
+    name: 'despia-local-sveltekit',
     apply: 'build',
     buildEnd() {
       // SvelteKit outputs to build directory

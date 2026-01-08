@@ -10,11 +10,11 @@ import { generateManifest } from './core.js';
  * @param {string} options.outDir - Output directory (default: 'dist')
  * @param {string} options.entryHtml - Entry HTML file (default: 'index.html')
  */
-export function despiaOffline(options = {}) {
+export function despiaLocal(options = {}) {
   const { outDir = 'dist', entryHtml = 'index.html' } = options;
 
   return {
-    name: 'despia-offline',
+    name: 'despia-local',
     writeBundle(outputOptions, bundle) {
       const outputDir = outputOptions.dir || outDir;
       const additionalPaths = [];

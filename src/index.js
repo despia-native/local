@@ -4,13 +4,13 @@
  */
 
 export { generateManifest, collectFiles } from './core.js';
-export { despiaOfflinePlugin } from './vite.js';
-export { default as DespiaOfflinePlugin } from './webpack.js';
-export { despiaOffline } from './rollup.js';
-export { withDespiaOffline } from './next.js';
-export { default as DespiaOfflineModule } from './nuxt.js';
-export { despiaOfflineSvelteKit } from './sveltekit.js';
-export { default as despiaOfflineIntegration } from './astro.js';
-export { despiaOfflineRemix } from './remix.js';
-export { despiaOfflineEsbuild } from './esbuild.js';
-export { default as DespiaOfflineParcel } from './parcel.js';
+export { despiaLocalPlugin } from './vite.js';
+export { default as DespiaLocalPlugin } from './webpack.js';
+export { despiaLocal } from './rollup.js';
+export { withDespiaLocal } from './next.js';
+export { default as DespiaLocalModule } from './nuxt.js';
+export { despiaLocalSvelteKit } from './sveltekit.js';
+export { default as despiaLocalIntegration } from './astro.js';
+export { despiaLocalRemix } from './remix.js';
+export { despiaLocalEsbuild } from './esbuild.js';
+export { default as DespiaLocalParcel } from './parcel.js';

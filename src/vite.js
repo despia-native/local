@@ -11,11 +11,11 @@ import { generateManifest } from './core.js';
  * @param {string} options.outDir - Output directory (default: 'dist')
  * @param {string} options.entryHtml - Entry HTML file (default: 'index.html')
  */
-export function despiaOfflinePlugin(options = {}) {
+export function despiaLocalPlugin(options = {}) {
   const { outDir = 'dist', entryHtml = 'index.html' } = options;
 
   return {
-    name: 'despia-offline',
+    name: 'despia-local',
     apply: 'build',
     writeBundle(bundleOptions, bundle) {
       const outputDir = bundleOptions.dir || outDir;

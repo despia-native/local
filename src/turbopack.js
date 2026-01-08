@@ -6,7 +6,7 @@
 
 import { generateManifest } from './core.js';
 
-export function despiaOfflineTurbopack(options = {}) {
+export function despiaLocalTurbopack(options = {}) {
   const { entryHtml = 'index.html', outDir = '.next' } = options;
 
   // Turbopack is used by Next.js, so we recommend using the Next.js integration
@@ -14,7 +14,7 @@ export function despiaOfflineTurbopack(options = {}) {
   console.warn('⚠ Turbopack: Use @despia/local/next instead for Next.js projects');
   
   return {
-    name: 'despia-offline-turbopack',
+    name: 'despia-local-turbopack',
     // Implementation would go here when Turbopack plugin API is stable
   };
 }

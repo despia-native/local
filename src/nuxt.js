@@ -4,24 +4,24 @@
  * Usage in nuxt.config.js:
  *   export default {
  *     modules: ['@despia/local/nuxt'],
- *     despiaOffline: {
+ *     despiaLocal: {
  *       entryHtml: 'index.html'
  *     }
  *   }
  * 
  * Or use as a Nuxt module in modules/ directory:
- *   // modules/despia-offline.js
- *   import DespiaOfflineModule from '@despia/local/nuxt';
- *   export default DespiaOfflineModule;
+ *   // modules/despia-local.js
+ *   import DespiaLocalModule from '@despia/local/nuxt';
+ *   export default DespiaLocalModule;
  */
 
 import { generateManifest } from './core.js';
 
-export default function DespiaOfflineModule(moduleOptions) {
+export default function DespiaLocalModule(moduleOptions) {
   const options = {
     entryHtml: 'index.html',
     ...moduleOptions,
-    ...(this.options?.despiaOffline || {})
+    ...(this.options?.despiaLocal || {})
   };
 
   // Hook into Nuxt build completion

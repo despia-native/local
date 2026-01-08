@@ -6,7 +6,7 @@
  * 
  *   "scripts": {
  *     "build": "parcel build",
- *     "postbuild": "despia-offline dist"
+ *     "postbuild": "despia-local dist"
  *   }
  * 
  * For Parcel 1.x, you can use this plugin, but the API may vary.
@@ -19,7 +19,7 @@ export default function(api) {
   const { outDir = 'dist', entryHtml = 'index.html' } = api.options || {};
 
   return {
-    name: 'despia-offline',
+    name: 'despia-local',
     async bundleEnd({ bundleGraph }) {
       const additionalPaths = [];
       
@@ -43,7 +43,7 @@ export default function(api) {
         console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
       } catch (error) {
         console.error('Error generating despia/local.json:', error.message);
-        console.warn('💡 Tip: For Parcel projects, use the standalone CLI: "despia-offline dist"');
+        console.warn('💡 Tip: For Parcel projects, use the standalone CLI: "despia-local dist"');
       }
     }
   };

@@ -2,8 +2,8 @@
  * Next.js integration for generating despia/local.json manifest
  * 
  * Usage in next.config.js:
- *   const withDespiaOffline = require('@despia/local/next');
- *   module.exports = withDespiaOffline({
+ *   const withDespiaLocal = require('@despia/local/next');
+ *   module.exports = withDespiaLocal({
  *     entryHtml: 'index.html',
  *     outDir: '.next' // or 'out' for static export
  *   })({
@@ -11,20 +11,20 @@
  *   });
  * 
  * Or use the webpack plugin approach:
- *   const DespiaOfflinePlugin = require('@despia/local/webpack');
+ *   const DespiaLocalPlugin = require('@despia/local/webpack');
  *   module.exports = {
  *     webpack: (config) => {
- *       config.plugins.push(new DespiaOfflinePlugin({ outDir: '.next' }));
+ *       config.plugins.push(new DespiaLocalPlugin({ outDir: '.next' }));
  *       return config;
  *     }
  *   };
  */
 
 import { generateManifest } from './core.js';
-import DespiaOfflinePlugin from './webpack.js';
+import DespiaLocalPlugin from './webpack.js';
 
-export function withDespiaOffline(pluginOptions = {}) {
-  const offlineConfig = {
+export function withDespiaLocal(pluginOptions = {}) {
+  const localConfig = {
     outDir: pluginOptions.outDir || '.next',
     entryHtml: pluginOptions.entryHtml || 'index.html',
     ...pluginOptions
@@ -36,11 +36,11 @@ export function withDespiaOffline(pluginOptions = {}) {
     return {
       ...nextConfig,
       webpack: (config, options) => {
-        // Add Despia Offline plugin
+        // Add Despia Local plugin
         config.plugins.push(
-          new DespiaOfflinePlugin({
-            outDir: offlineConfig.outDir,
-            entryHtml: offlineConfig.entryHtml
+          new DespiaLocalPlugin({
+            outDir: localConfig.outDir,
+            entryHtml: localConfig.entryHtml
           })
         );
 
@@ -56,4 +56,4 @@ export function withDespiaOffline(pluginOptions = {}) {
 }
 
 // Also export as CommonJS for Next.js compatibility
-export default withDespiaOffline;
+export default withDespiaLocal;
