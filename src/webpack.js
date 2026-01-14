@@ -9,6 +9,7 @@ class DespiaLocalPlugin {
     this.options = {
       outDir: options.outDir || 'dist',
       entryHtml: options.entryHtml || 'index.html',
+      skipEntryHtml: options.skipEntryHtml || false,
       ...options
     };
   }
@@ -17,6 +18,19 @@ class DespiaLocalPlugin {
     const pluginName = 'DespiaLocalPlugin';
     
     compiler.hooks.afterEmit.tapAsync(pluginName, (compilation, callback) => {
+      // Detect if this is a Next.js server build
+      // Next.js server builds have specific compiler name patterns
+      const compilerName = compilation.compiler.name || '';
+      const isNextJsServerBuild = compilerName.includes('server') || 
+                                   compilerName.includes('Server') ||
+                                   compilation.compiler.options?.target === 'node';
+      
+      // Skip manifest generation for server builds (SSR apps don't need server-side assets)
+      if (isNextJsServerBuild) {
+        callback();
+        return;
+      }
+      
       // Get output path from webpack compiler
       const outputPath = compilation.compiler.outputPath || this.options.outDir;
       const additionalPaths = [];
@@ -41,7 +55,8 @@ class DespiaLocalPlugin {
         const paths = generateManifest({
           outputDir: outputPath,
           entryHtml: this.options.entryHtml,
-          additionalPaths
+          additionalPaths,
+          skipEntryHtml: this.options.skipEntryHtml
         });
         console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
       } catch (error) {

@@ -51,9 +51,10 @@ export function collectFiles(dir, baseDir = dir) {
  * @param {string} options.outputDir - Output directory path
  * @param {string} options.entryHtml - Entry HTML filename (default: 'index.html')
  * @param {string[]} options.additionalPaths - Additional paths to include
+ * @param {boolean} options.skipEntryHtml - Skip adding entry HTML to manifest (for SSR apps)
  * @returns {string[]} Array of all asset paths
  */
-export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [] }) {
+export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [], skipEntryHtml = false }) {
   const outputPath = resolve(process.cwd(), outputDir);
   const manifestPath = join(outputPath, 'despia', 'local.json');
   
@@ -71,11 +72,13 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
     assetPaths.add(normalizedPath);
   });
   
-  // Ensure entry HTML is included
-  const entryPath = entryHtml.startsWith('/') 
-    ? entryHtml 
-    : '/' + entryHtml;
-  assetPaths.add(entryPath);
+  // Ensure entry HTML is included (unless skipped for SSR apps)
+  if (!skipEntryHtml) {
+    const entryPath = entryHtml.startsWith('/') 
+      ? entryHtml 
+      : '/' + entryHtml;
+    assetPaths.add(entryPath);
+  }
   
   // Convert to sorted array
   const sortedPaths = Array.from(assetPaths).sort();

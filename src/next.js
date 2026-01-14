@@ -1,16 +1,26 @@
 /**
  * Next.js integration for generating despia/local.json manifest
  * 
- * Usage in next.config.js:
+ * Usage for static export:
  *   const withDespiaLocal = require('@despia/local/next');
  *   module.exports = withDespiaLocal({
  *     entryHtml: 'index.html',
- *     outDir: '.next' // or 'out' for static export
+ *     outDir: 'out' // Next.js static export directory
  *   })({
+ *     output: 'export',
  *     // your next config
  *   });
  * 
- * Or use the webpack plugin approach:
+ * Usage for SSR (recommended: use post-build script):
+ *   // package.json
+ *   {
+ *     "scripts": {
+ *       "build": "next build",
+ *       "postbuild": "despia-local .next/static"
+ *     }
+ *   }
+ * 
+ * Or use the webpack plugin approach (works best for static export):
  *   const DespiaLocalPlugin = require('@despia/local/webpack');
  *   module.exports = {
  *     webpack: (config) => {
@@ -31,18 +41,33 @@ export function withDespiaLocal(pluginOptions = {}) {
   };
 
   return (nextConfig = {}) => {
+    // Detect if this is static export or SSR
+    const isStaticExport = nextConfig.output === 'export';
     const existingWebpack = nextConfig.webpack;
 
     return {
       ...nextConfig,
       webpack: (config, options) => {
-        // Add Despia Local plugin
-        config.plugins.push(
-          new DespiaLocalPlugin({
-            outDir: localConfig.outDir,
-            entryHtml: localConfig.entryHtml
-          })
-        );
+        // Only add webpack plugin for client builds (not server builds)
+        // For SSR, the webpack plugin will target .next/static during client build
+        // For static export, it works normally
+        if (!options.isServer) {
+          // Determine the correct output directory
+          let targetOutDir = localConfig.outDir;
+          
+          // For SSR apps, target .next/static where client assets are stored
+          if (!isStaticExport && targetOutDir === '.next') {
+            targetOutDir = '.next/static';
+          }
+          
+          config.plugins.push(
+            new DespiaLocalPlugin({
+              outDir: targetOutDir,
+              entryHtml: localConfig.entryHtml,
+              skipEntryHtml: !isStaticExport // Skip entryHtml for SSR
+            })
+          );
+        }
 
         // Call existing webpack config if present
         if (typeof existingWebpack === 'function') {

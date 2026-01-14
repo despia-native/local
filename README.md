@@ -418,19 +418,22 @@ export default {
 
 ### Next.js
 
+**For static export (recommended for static sites):**
+
 ```javascript
 // next.config.js
 const withDespiaLocal = require('@despia/local/next');
 
 module.exports = withDespiaLocal({
   entryHtml: 'index.html',
-  outDir: '.next' // or 'out' for static export
+  outDir: 'out' // Next.js static export directory
 })({
+  output: 'export',
   // your Next.js config
 });
 ```
 
-**For static export:**
+**For static export (alternative):**
 
 ```javascript
 // next.config.js
@@ -445,21 +448,67 @@ module.exports = withDespiaLocal({
 });
 ```
 
-**Alternative: Webpack Plugin Approach**
+**Alternative: Webpack Plugin Approach (works best for static export):**
 
 ```javascript
 // next.config.js
 const DespiaLocalPlugin = require('@despia/local/webpack');
 
 module.exports = {
+  output: 'export', // For static export
   webpack: (config) => {
     config.plugins.push(
-      new DespiaLocalPlugin({ outDir: '.next' })
+      new DespiaLocalPlugin({ outDir: 'out' })
     );
     return config;
   }
 };
 ```
+
+**Note**: The webpack plugin approach works best for static export. For SSR apps, use the post-build script approach described below.
+
+**For SSR (Server-Side Rendering) apps:**
+
+SSR Next.js apps require special handling because:
+- Client assets are in `.next/static/` directory (not `.next/`)
+- No static HTML files exist (pages are server-rendered)
+- Manifest should only include client-side assets (JS, CSS, images)
+- Server-side code in `.next/server/` should NOT be included
+
+**Recommended approach for SSR (most reliable):**
+
+Use a post-build script in your `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "next build",
+    "postbuild": "despia-local .next/static"
+  }
+}
+```
+
+This approach:
+- Runs after Next.js build completes
+- Targets `.next/static/` where all client assets are stored
+- Works reliably for both SSR and static export
+- No `entryHtml` needed (SSR apps don't have static HTML files)
+
+**Alternative: Using the plugin (may have timing issues):**
+
+```javascript
+// next.config.js
+const withDespiaLocal = require('@despia/local/next');
+
+module.exports = withDespiaLocal({
+  // entryHtml is optional for SSR (not used)
+  outDir: '.next/static'  // Target client assets directory
+})({
+  // your Next.js config (SSR mode - no output: 'export')
+});
+```
+
+**Note**: The plugin approach may not work reliably for SSR because Next.js doesn't provide a reliable build completion hook. The post-build script approach is recommended for SSR apps.
 
 ### Nuxt
 
@@ -732,6 +781,30 @@ The generated manifest is then used by Despia during app hydration and updates t
 - All paths are automatically normalized to root-relative format
 - Paths starting with `/` are preserved as-is
 - Windows backslashes are converted to forward slashes
+
+### Next.js SSR Issues
+
+**Manifest not generated for SSR app:**
+
+1. Ensure you're targeting `.next/static/` directory (not `.next/`)
+2. Use the post-build script approach: `"postbuild": "despia-local .next/static"`
+3. Verify build completed successfully: `next build` should finish without errors
+4. Check that `.next/static/` directory exists after build
+5. The plugin approach may not work reliably for SSR - prefer post-build script
+
+**Missing assets in SSR manifest:**
+
+- SSR apps only need client assets (JS, CSS, images)
+- Server-side code in `.next/server/` is NOT included (correct behavior)
+- Only assets in `.next/static/` should be in the manifest
+- Verify you're scanning `.next/static/` not `.next/` or `.next/server/`
+
+**Wrong directory for SSR:**
+
+If you see errors about missing directories:
+- For SSR: Use `.next/static/` (client assets only)
+- For static export: Use `out/` (full static site)
+- Never use `.next/server/` (server code, not needed for manifest)
 
 ## Contributing
 
