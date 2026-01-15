@@ -48,15 +48,20 @@ export function collectFiles(dir, baseDir = dir) {
 /**
  * Generate the offline manifest file
  * @param {Object} options
- * @param {string} options.outputDir - Output directory path
+ * @param {string} options.outputDir - Output directory path (where to scan for assets)
  * @param {string} options.entryHtml - Entry HTML filename (default: 'index.html')
  * @param {string[]} options.additionalPaths - Additional paths to include
  * @param {boolean} options.skipEntryHtml - Skip adding entry HTML to manifest (for SSR apps)
+ * @param {string} options.manifestOutputPath - Custom path for manifest file (default: outputDir/despia/local.json)
  * @returns {string[]} Array of all asset paths
  */
-export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [], skipEntryHtml = false }) {
+export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [], skipEntryHtml = false, manifestOutputPath = null }) {
   const outputPath = resolve(process.cwd(), outputDir);
-  const manifestPath = join(outputPath, 'despia', 'local.json');
+  
+  // Use custom manifest output path if provided, otherwise default to outputDir/despia/local.json
+  const manifestPath = manifestOutputPath
+    ? resolve(process.cwd(), manifestOutputPath)
+    : join(outputPath, 'despia', 'local.json');
   
   // Check if output directory exists
   if (!existsSync(outputPath)) {
@@ -83,10 +88,12 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
   // Convert to sorted array
   const sortedPaths = Array.from(assetPaths).sort();
   
-  // Create despia directory if it doesn't exist
-  const despiaDir = join(outputPath, 'despia');
-  if (!existsSync(despiaDir)) {
-    mkdirSync(despiaDir, { recursive: true });
+  // Create directory for manifest if it doesn't exist
+  const manifestDir = manifestOutputPath 
+    ? resolve(manifestPath, '..') 
+    : join(outputPath, 'despia');
+  if (!existsSync(manifestDir)) {
+    mkdirSync(manifestDir, { recursive: true });
   }
   
   // Write formatted JSON array

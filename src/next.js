@@ -8,19 +8,19 @@
  *     outDir: 'out' // Next.js static export directory
  *   })({
  *     output: 'export',
- *     // your next config
+ *     // your Next.js config
  *   });
  * 
- * Usage for SSR (recommended: use post-build script):
+ * For SSR apps, use the post-build script approach:
  *   // package.json
  *   {
  *     "scripts": {
  *       "build": "next build",
- *       "postbuild": "despia-local .next/static"
+ *       "postbuild": "despia-local .next/static --output public/despia/local.json"
  *     }
  *   }
  * 
- * Or use the webpack plugin approach (works best for static export):
+ * Or use the webpack plugin approach:
  *   const DespiaLocalPlugin = require('@despia/local/webpack');
  *   module.exports = {
  *     webpack: (config) => {
@@ -41,33 +41,18 @@ export function withDespiaLocal(pluginOptions = {}) {
   };
 
   return (nextConfig = {}) => {
-    // Detect if this is static export or SSR
-    const isStaticExport = nextConfig.output === 'export';
     const existingWebpack = nextConfig.webpack;
 
     return {
       ...nextConfig,
       webpack: (config, options) => {
-        // Only add webpack plugin for client builds (not server builds)
-        // For SSR, the webpack plugin will target .next/static during client build
-        // For static export, it works normally
-        if (!options.isServer) {
-          // Determine the correct output directory
-          let targetOutDir = localConfig.outDir;
-          
-          // For SSR apps, target .next/static where client assets are stored
-          if (!isStaticExport && targetOutDir === '.next') {
-            targetOutDir = '.next/static';
-          }
-          
-          config.plugins.push(
-            new DespiaLocalPlugin({
-              outDir: targetOutDir,
-              entryHtml: localConfig.entryHtml,
-              skipEntryHtml: !isStaticExport // Skip entryHtml for SSR
-            })
-          );
-        }
+        // Add Despia Local plugin
+        config.plugins.push(
+          new DespiaLocalPlugin({
+            outDir: localConfig.outDir,
+            entryHtml: localConfig.entryHtml
+          })
+        );
 
         // Call existing webpack config if present
         if (typeof existingWebpack === 'function') {
