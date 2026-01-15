@@ -8,7 +8,7 @@ Universal build plugin to generate `despia/local.json` manifest for [Despia](htt
 
 ## Features
 
-- **Universal Support** - Works with Vite, Webpack, Rollup, Next.js, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more
+- **Universal Support** - Works with Vite, Webpack, Rollup, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more
 - **Zero Dependencies** - Uses only Node.js built-in modules
 - **Automatic Asset Discovery** - Collects all output files (JS, CSS, images, fonts, HTML, etc.)
 - **Root-Relative Paths** - Formats all paths as root-relative (starting with `/`)
@@ -356,8 +356,8 @@ npx despia-local [outputDir] [entryHtml] [--output|-o manifestPath]
 npx despia-local dist
 
 # Custom output location (e.g., for Vercel/Netlify)
-npx despia-local .next/static --output public/despia/local.json
-npx despia-local dist -o public/manifest.json
+npx despia-local dist --output public/despia/local.json
+npx despia-local build -o public/manifest.json
 ```
 
 ## Framework Support
@@ -429,46 +429,6 @@ export default {
   ]
 };
 ```
-
-### Next.js
-
-**Recommended: Client-Side Apps for Local/Offline Apps**
-
-For local/offline apps, we **recommend using client-side frameworks** like React + Vite or Create React App instead of Next.js. Client-side apps are better suited for offline/local deployment because:
-
-- All features are client-side by default
-- No server-side dependencies
-- Simpler build and deployment
-- Better offline support
-
-See the [React/Vite](#react--vite) section for examples.
-
-**Supported: Static Export Only**
-
-If you're using Next.js, this plugin supports apps using `output: 'export'` (static export mode). 
-
-```javascript
-// next.config.js
-const withDespiaLocal = require('@despia/local/next');
-
-module.exports = withDespiaLocal({
-  entryHtml: 'index.html',
-  outDir: 'out' // Next.js static export directory
-})({
-  output: 'export',
-  // your Next.js config
-});
-```
-
-**For SSR Apps with Separate Static Build:**
-
-If you need SSR for your main site but want a static build for the local app, Next.js can easily generate a separate static build. You can set up a mini CI/CD pipeline to:
-
-- Keep your main site as SSR (better for SEO, dynamic content)
-- Generate a separate static export build for the local/offline app
-- Deploy both builds independently
-
-**Note**: Setting up the CI/CD pipeline for dual builds (SSR main site + static local app) requires custom configuration based on your hosting provider and build setup. You'll need to figure out the deployment strategy yourself - this plugin only handles manifest generation for the static export build.
 
 ### Nuxt
 
@@ -741,37 +701,6 @@ The generated manifest is then used by Despia during app hydration and updates t
 - All paths are automatically normalized to root-relative format
 - Paths starting with `/` are preserved as-is
 - Windows backslashes are converted to forward slashes
-
-### Next.js Troubleshooting
-
-**Static Export Issues:**
-
-**Manifest not generated:**
-1. Ensure you're using `output: 'export'` in your `next.config.js`
-2. Verify the plugin is correctly configured with `withDespiaLocal()`
-3. Check that `out/` directory exists after build
-4. Ensure `entryHtml` matches your actual entry HTML file
-
-**Wrong directory:**
-- For static export: Use `out/` directory (Next.js default for static export)
-- Never use `.next/` for static export (that's for SSR builds)
-
-**Manifest not accessible:**
-- Manifest is generated in `out/despia/local.json`
-- Ensure your hosting provider serves files from the `out/` directory
-- Static export output should be served as static files
-
-**SSR Apps (Not Officially Supported):**
-
-**Important**: This plugin does **not** officially support Next.js SSR apps. SSR requires custom tooling specific to your hosting provider.
-
-If you choose to use post-build scripts for SSR (unsupported):
-1. Use `.next/static/` directory (client assets only)
-2. Never include `.next/server/` (server code, not needed)
-3. Customize the approach based on your hosting provider's requirements
-4. This is experimental and not guaranteed to work reliably
-
-For production SSR apps, implement provider-specific solutions rather than relying on this plugin.
 
 ## Contributing
 

@@ -1,7 +1,7 @@
 {
   "name": "@despia/local",
-  "version": "1.0.2",
-  "description": "Universal build plugin to generate despia/local.json manifest for offline caching in Despia web-native apps. Supports Vite, Webpack, Rollup, Next.js, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more.",
+  "version": "1.0.3",
+  "description": "Universal build plugin to generate despia/local.json manifest for offline caching in Despia web-native apps. Supports Vite, Webpack, Rollup, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more.",
   "type": "module",
   "main": "./src/core.js",
   "bin": {
@@ -19,9 +19,6 @@
     },
     "./rollup": {
       "import": "./src/rollup.js"
-    },
-    "./next": {
-      "import": "./src/next.js"
     },
     "./nuxt": {
       "import": "./src/nuxt.js"
@@ -67,7 +64,6 @@
     "vite",
     "webpack",
     "rollup",
-    "nextjs",
     "nuxt",
     "sveltekit",
     "astro",
