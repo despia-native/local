@@ -94,16 +94,16 @@ class DespiaLocalPlugin {
         }
         
         // 3. Separate entry from other assets and generate object format
+        // Entry is always required for local client-side apps
         const entryPath = this.options.entryHtml.startsWith('/') 
           ? this.options.entryHtml 
           : '/' + this.options.entryHtml;
-        const hasEntry = assets.has(entryPath) && !this.options.skipEntryHtml;
         const assetList = Array.from(assets)
           .filter(path => path !== entryPath || this.options.skipEntryHtml)
           .sort();
         
         const manifestObj = {
-          entry: hasEntry ? entryPath : null,
+          entry: entryPath,
           assets: assetList
         };
         const manifest = JSON.stringify(manifestObj, null, 2);
@@ -115,7 +115,7 @@ class DespiaLocalPlugin {
           size: () => Buffer.byteLength(manifest, 'utf8')
         };
         
-        console.log(`✓ Injected despia/local.json into build with ${assetList.length} assets${hasEntry ? ` and entry: ${entryPath}` : ''}`);
+        console.log(`✓ Injected despia/local.json into build with ${assetList.length} assets and entry: ${entryPath}`);
       } else {
         // Traditional mode: Write to filesystem (for other bundlers)
         const additionalPaths = new Set();

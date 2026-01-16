@@ -656,7 +656,7 @@ The generated `despia/local.json` file contains an object with the entry HTML pa
 }
 ```
 
-- **`entry`**: The entry HTML file path (e.g., `/index.html`). This is `null` if `skipEntryHtml` is enabled (for SSR apps).
+- **`entry`**: The entry HTML file path (e.g., `/index.html`). **Required** - Local apps always need an entry point for client-side rendering. When `skipEntryHtml` is enabled, the entry is still required in the manifest but won't be included in the `assets` array.
 - **`assets`**: A sorted array of all asset paths (excluding the entry file).
 
 ## Examples

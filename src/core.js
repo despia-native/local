@@ -51,9 +51,9 @@ export function collectFiles(dir, baseDir = dir) {
  * @param {string} options.outputDir - Output directory path (where to scan for assets)
  * @param {string} options.entryHtml - Entry HTML filename (default: 'index.html')
  * @param {string[]} options.additionalPaths - Additional paths to include
- * @param {boolean} options.skipEntryHtml - Skip adding entry HTML to manifest (for SSR apps)
+ * @param {boolean} options.skipEntryHtml - Skip adding entry HTML to assets array (entry is still required in manifest)
  * @param {string} options.manifestOutputPath - Custom path for manifest file (default: outputDir/despia/local.json)
- * @returns {{entry: string|null, assets: string[]}} Object with entry path and assets array
+ * @returns {{entry: string, assets: string[]}} Object with entry path and assets array
  */
 export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [], skipEntryHtml = false, manifestOutputPath = null }) {
   const outputPath = resolve(process.cwd(), outputDir);
@@ -77,25 +77,24 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
     assetPaths.add(normalizedPath);
   });
   
-  // Determine entry path
+  // Determine entry path (always required for local apps)
   const entryPath = entryHtml.startsWith('/') 
     ? entryHtml 
     : '/' + entryHtml;
   
-  // Ensure entry HTML is included (unless skipped for SSR apps)
+  // Add entry HTML to assets if not skipped (for SSR apps, entry is still required but not in assets)
   if (!skipEntryHtml) {
     assetPaths.add(entryPath);
   }
   
   // Separate entry from other assets
-  const hasEntry = assetPaths.has(entryPath) && !skipEntryHtml;
   const assets = Array.from(assetPaths)
     .filter(path => path !== entryPath || skipEntryHtml)
     .sort();
   
-  // Create manifest object
+  // Create manifest object (entry is always required for local client-side apps)
   const manifest = {
-    entry: hasEntry ? entryPath : null,
+    entry: entryPath,
     assets: assets
   };
   
