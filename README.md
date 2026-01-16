@@ -1,6 +1,6 @@
 # @despia/local
 
-Universal build plugin to generate `despia/local.json` manifest for [Despia](https://despia.com) web-native apps. This manifest enables Despia Local Server, which runs your web app from a secure local HTTPS server on-device, providing full offline functionality with seamless updates.
+Universal build plugin to generate `despia/local.json` manifest for [Despia](https://despia.com) web-native apps. This manifest enables Despia Local Server, which runs your web app from a local HTTP server on-device, providing full offline functionality with seamless updates.
 
 **Note**: Despia Local Server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia Local Server is for developers who need extra performance and full true native offline support.
 
@@ -19,7 +19,7 @@ Universal build plugin to generate `despia/local.json` manifest for [Despia](htt
 
 **Note**: Despia Local Server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia Local Server is for developers who need extra performance and full true native offline support.
 
-Despia Local Server enables your web app to run entirely from a secure local HTTPS server on-device, providing a native app experience with full offline functionality.
+Despia Local Server enables your web app to run entirely from a local HTTP server on-device, providing a native app experience with full offline functionality.
 
 ### Architecture
 
@@ -28,13 +28,13 @@ The Despia native container consists of:
 - **Native iOS/Android Container**: The native binary submitted to App Store/Play Store
   - WebView for UI rendering (WKWebView on iOS, WebView on Android)
   - JavaScript bridge for native API access (exposes native capabilities to web content via [`despia-native`](https://www.npmjs.com/package/despia-native))
-  - Local HTTPS server infrastructure (runs on-device only)
+  - Local HTTP server infrastructure (runs on-device only)
   - Storage and update management systems
 
 - **Web Content Layer** (downloaded and cached):
   - HTML, CSS, JavaScript files
   - Images, fonts, and other static assets
-  - Served from `https://localhost` after initial hydration
+  - Served from `http://localhost` after initial hydration
 
 **Key Architecture Principles:**
 - Web content updates (HTML/CSS/JS only)
@@ -50,14 +50,14 @@ The App Store/Play Store binary contains the native iOS/Android container (see [
 - Native code (Swift/Kotlin) for platform integration
 - WebView component for UI rendering
 - JavaScript bridge for native API access (exposes native capabilities to web content via [`despia-native`](https://www.npmjs.com/package/despia-native))
-- Local HTTPS server infrastructure (runs on-device only)
+- Local HTTP server infrastructure (runs on-device only)
 - Storage and update management systems
 - No web app assets (HTML, CSS, JavaScript) are bundled in the binary
 
 This approach keeps initial install sizes minimal and allows for rapid iteration of web UI without requiring app store resubmissions. **Important**: All native code, the JavaScript bridge, and app functionality are fixed at submission time and cannot be changed. Only web content (HTML/CSS/JS) can be updated.
 
 **First Launch Hydration**
-On first app launch, Despia securely downloads your latest web build (HTML, CSS, JavaScript, images, fonts) from your repository and stores it locally on the device. The local HTTPS server then begins serving your web content from `https://localhost`, providing a stable, secure origin for your web application.
+On first app launch, Despia securely downloads your latest web build (HTML, CSS, JavaScript, images, fonts) from your repository and stores it locally on the device. The local HTTP server then begins serving your web content from `http://localhost`, providing a stable origin for your web application.
 
 **Note on Compliance**: This process downloads and caches web content files only. No native code, executables, or binary files are downloaded. The JavaScript executes within the WebView's sandbox, identical to how Safari or Chrome render web pages.
 
@@ -67,7 +67,7 @@ After the initial hydration, your app operates completely offline:
 - No network connectivity required
 - Full SPA routing and navigation
 - Deep linking support
-- Stable HTTPS origin (`https://localhost`) for security
+- Stable HTTP origin (`http://localhost`) for hybrid app flexibility
 
 If the device goes offline permanently, the app continues to function using the last hydrated version, ensuring reliability even without connectivity.
 
@@ -159,7 +159,7 @@ Despia Local Server complies with this guideline because:
 
    **Note**: This follows the same pattern as [Expo](https://expo.dev), which has been generally accepted by app stores. However, Apple's interpretation of "feature changes" under Guideline 3.3.2 is subjective, and your app could still face review challenges. It's recommended to be conservative with updates that significantly change app behavior, even when using existing native APIs.
 
-4. **On-Device Execution**: All web content is served from a local HTTPS server running on-device (`localhost`). No remote code execution occurs.
+4. **On-Device Execution**: All web content is served from a local HTTP server running on-device (`localhost`). No remote code execution occurs.
 
 **This approach is explicitly permitted** under App Store guidelines, as evidenced by:
 - Safari and other browsers downloading and rendering web content
@@ -236,11 +236,86 @@ This follows the same pattern as established frameworks like [Expo](https://expo
 - Consider submitting major feature additions through the normal App Store review process when possible
 
 **Security Model:**
-- All web content is served from `https://localhost` (on-device only)
+- All web content is served from `http://localhost` (on-device only)
 - WebView sandbox enforces same-origin policy
 - No network access to external servers after initial hydration
 - Content Security Policy (CSP) can be enforced
 - All execution happens within WebView's security boundaries
+
+### HTTP vs HTTPS for Local Apps
+
+Despia Local Server uses **HTTP** for serving local content. This design choice provides important flexibility for hybrid apps while maintaining full security through `localhost`'s inherent security guarantees.
+
+#### Security Guarantees of localhost
+
+`http://localhost` is a **secure context** in all modern browsers and provides inherent security guarantees:
+
+1. **Reserved Hostname**: `localhost` is a reserved hostname that maps exclusively to `127.0.0.1` (IPv4) or `::1` (IPv6) on the local machine. It cannot be redirected or spoofed by external attackers.
+
+2. **No Network Exposure**: Traffic to `localhost` never leaves the device. All communication stays within the local machine, eliminating network-based attack vectors.
+
+3. **Secure Context**: `http://localhost` IS a secure context in browsers, meaning all modern Web APIs work perfectly:
+   - Service Workers
+   - Web Crypto API
+   - Geolocation API
+   - MediaDevices API
+   - And all other secure-context APIs
+
+4. **Cannot Be Spoofed**: External attackers cannot redirect `localhost` to their servers. The hostname is hardcoded to point to the local machine, providing the same security guarantees as HTTPS for local-only content.
+
+5. **On-Device Execution**: Combined with WebView sandbox isolation, same-origin policy, and Content Security Policy, `localhost` provides a secure execution environment without requiring encryption overhead.
+
+#### Why HTTP is the Right Choice for Hybrid Apps
+
+1. **Protocol Flexibility**: HTTP allows your app to load resources from both HTTPS (external APIs, CDNs) and HTTP (local server) origins without mixed content warnings. This is crucial for hybrid apps that need to:
+   - Load local assets from `http://localhost`
+   - Make API calls to `https://api.example.com`
+   - Embed external HTTPS resources (images, fonts, etc.)
+   - Work seamlessly across different network configurations
+
+2. **Secure Context Support**: `http://localhost` is treated as a secure context by browsers, meaning all modern Web APIs (Service Workers, Web Crypto API, Geolocation, etc.) work without requiring HTTPS.
+
+3. **Inherent Security**: `localhost` is a reserved hostname that can only point to the local machine (`127.0.0.1`). This means:
+   - Traffic never leaves the device (no network exposure)
+   - Cannot be spoofed or redirected by external attackers
+   - Provides the same security guarantees as HTTPS for local-only content
+
+4. **Simplified Development**: HTTP eliminates certificate management complexity for local development and testing. No need to generate, install, or manage SSL certificates for localhost.
+
+5. **Cross-Origin Resource Sharing (CORS)**: HTTP on localhost provides more predictable CORS behavior when mixing local and remote resources, reducing integration complexity.
+
+6. **Performance**: HTTP has slightly lower overhead than HTTPS, which is beneficial for local file serving where encryption isn't necessary since all content is already on-device and `localhost` provides inherent security.
+
+7. **Compatibility**: HTTP works consistently across all platforms and WebView implementations without requiring certificate pinning or trust store configuration.
+
+#### When HTTPS Might Be Needed
+
+While HTTP with `localhost` provides full security for local-only content, HTTPS might be required in specific scenarios:
+
+1. **Enterprise Compliance**: Some enterprise security policies require all network traffic (including local) to be encrypted, making HTTPS a requirement for certain deployment scenarios.
+
+2. **Certificate Validation**: HTTPS with proper certificate validation provides additional assurance that the local server hasn't been tampered with or replaced by malicious software. This can be important in high-security environments.
+
+3. **Security-in-Depth**: HTTPS enforces encryption even for local traffic, following security-in-depth principles. This protects against potential local network attacks or device-level interception in shared or untrusted environments.
+
+4. **Content Security Policy (CSP)**: HTTPS makes it easier to enforce strict CSP headers without mixed content warnings, though this is less relevant for local-only content.
+
+5. **Browser Security Indicators**: HTTPS provides visual security indicators (lock icon) that can increase user trust, even for local content.
+
+**Note**: For most hybrid app scenarios, HTTP with `localhost` provides the right balance of flexibility and security. The security comes from the reserved hostname and on-device execution, not encryption. However, if your use case requires HTTPS (e.g., enterprise compliance, strict security policies), you can configure your WebView to use HTTPS for the local server.
+
+#### Current Implementation Rationale
+
+Despia Local Server uses HTTP because the primary use case is hybrid apps that need maximum flexibility to mix local and remote resources. The security model relies on:
+
+- **Secure Context**: `http://localhost` IS a secure context, enabling all modern Web APIs
+- **Reserved Hostname**: `localhost` is a reserved hostname (`127.0.0.1`) that cannot be spoofed
+- **On-Device Execution**: All traffic stays on-device (no network exposure)
+- **WebView Sandbox Isolation**: WebView enforces security boundaries
+- **Same-Origin Policy**: Browser enforces same-origin policy
+- **Content Security Policy**: CSP can be enforced when configured
+
+Security comes from the reserved hostname and on-device execution, not encryption. For most hybrid app scenarios, HTTP provides the right balance of flexibility and security.
 
 #### Comparison to Similar Technologies
 

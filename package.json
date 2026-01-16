@@ -1,6 +1,6 @@
 {
   "name": "@despia/local",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Universal build plugin to generate despia/local.json manifest for offline caching in Despia web-native apps. Supports Vite, Webpack, Rollup, Nuxt, SvelteKit, Astro, Remix, esbuild, Parcel, and more.",
   "type": "module",
   "main": "./src/core.js",
