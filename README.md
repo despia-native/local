@@ -1,10 +1,10 @@
 # @despia/local
 
-Universal build plugin to generate `despia/local.json` manifest for [Despia](https://despia.com) web-native apps. This manifest enables Despia Local Server, which runs your web app from a local HTTP server on-device, providing full offline functionality with seamless updates.
+Universal build plugin to generate `despia/local.json` manifest for [Despia](https://despia.com) web-native apps. This manifest enables Despia's local server, which runs your web app from a local HTTP server on-device, providing full offline functionality with seamless updates.
 
-**Note**: Despia Local Server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia Local Server is for developers who need extra performance and full true native offline support.
+**Note**: Despia's local server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia's local server is for developers who need extra performance and full true native offline support.
 
-**Store Compliant**: Despia Local Server is fully compliant with Apple App Store and Google Play Store guidelines. It downloads and caches web content (HTML, CSS, JavaScript) for offline display in a WebView—identical to how web browsers work. No native code or executables are downloaded. See [Store Compliance & Security](#store-compliance--security) section for detailed compliance information.
+**Store Compliant**: Despia's local server is fully compliant with Apple App Store and Google Play Store guidelines. It downloads and caches web content (HTML, CSS, JavaScript) for offline display in a WebView—identical to how web browsers work. No native code or executables are downloaded. See [Store Compliance & Security](#store-compliance--security) section for detailed compliance information.
 
 ## Features
 
@@ -15,11 +15,11 @@ Universal build plugin to generate `despia/local.json` manifest for [Despia](htt
 - **Sorted Output** - Alphabetically sorted paths for consistent builds
 - **Standalone Script** - Can be used with any build system via CLI
 
-## About Despia Local Server
+## About Despia's Local Server
 
-**Note**: Despia Local Server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia Local Server is for developers who need extra performance and full true native offline support.
+**Note**: Despia's local server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia's local server is for developers who need extra performance and full true native offline support.
 
-Despia Local Server enables your web app to run entirely from a local HTTP server on-device, providing a native app experience with full offline functionality.
+Despia's local server enables your web app to run entirely from a local HTTP server on-device, providing a native app experience with full offline functionality.
 
 ### Architecture
 
@@ -84,7 +84,7 @@ When connectivity is available, Despia checks for updates in the background and 
 
 **Compliance Summary for App Reviewers:**
 
-Despia Local Server downloads and caches web content files (HTML, CSS, JavaScript, images) for offline display in a WebView. This is identical to how web browsers (Safari, Chrome) download and render web pages. 
+Despia's local server downloads and caches web content files (HTML, CSS, JavaScript, images) for offline display in a WebView. This is identical to how web browsers (Safari, Chrome) download and render web pages. 
 
 **Key Compliance Points:**
 - No native code is downloaded or executed
@@ -133,7 +133,7 @@ See the [`despia-version-guard` documentation](https://www.npmjs.com/package/des
 
 ---
 
-Despia Local Server is fully compliant with both Apple App Store and Google Play Store guidelines. This section explains the compliance in detail.
+Despia's local server is fully compliant with both Apple App Store and Google Play Store guidelines. This section explains the compliance in detail.
 
 #### Apple App Store Compliance
 
@@ -141,7 +141,7 @@ Despia Local Server is fully compliant with both Apple App Store and Google Play
 > "Apps must not download, install, or execute code which introduces or changes features or functionality of the app, including other apps."
 
 **Compliance Statement:**
-Despia Local Server complies with this guideline because:
+Despia's local server complies with this guideline because:
 
 1. **No Native Code Execution**: The app does not download, install, or execute any native code (Swift, Objective-C, C++, etc.). All native code is fixed at App Store submission time and cannot be modified.
 
@@ -173,7 +173,7 @@ Despia Local Server complies with this guideline because:
 > "Apps must not download executable code (e.g., dex, JAR, .so files) from a source other than Google Play."
 
 **Compliance Statement:**
-Despia Local Server complies with this policy because:
+Despia's local server complies with this policy because:
 
 1. **No Executable Code Downloads**: The app does not download any executable code (`.dex`, `.jar`, `.so`, `.apk`, or native binaries). Only web content files (HTML, CSS, JavaScript, images, fonts) are downloaded.
 
@@ -244,7 +244,7 @@ This follows the same pattern as established frameworks like [Expo](https://expo
 
 ### HTTP vs HTTPS for Local Apps
 
-Despia Local Server uses **HTTP** for serving local content. This design choice provides important flexibility for hybrid apps while maintaining full security through `localhost`'s inherent security guarantees.
+Despia's local server uses **HTTP** for serving local content. This design choice provides important flexibility for hybrid apps while maintaining full security through `localhost`'s inherent security guarantees.
 
 #### Security Guarantees of localhost
 
@@ -306,7 +306,7 @@ While HTTP with `localhost` provides full security for local-only content, HTTPS
 
 #### Current Implementation Rationale
 
-Despia Local Server uses HTTP because the primary use case is hybrid apps that need maximum flexibility to mix local and remote resources. The security model relies on:
+Despia's local server uses HTTP because the primary use case is hybrid apps that need maximum flexibility to mix local and remote resources. The security model relies on:
 
 - **Secure Context**: `http://localhost` IS a secure context, enabling all modern Web APIs
 - **Reserved Hostname**: `localhost` is a reserved hostname (`127.0.0.1`) that cannot be spoofed
@@ -361,7 +361,7 @@ This is analogous to:
 
 #### Developer Responsibility
 
-When submitting apps using Despia Local Server:
+When submitting apps using Despia's local server:
 
 1. **App Store Submission**: Clearly state that the app uses a WebView to display web content that may be cached for offline use. This is standard practice and does not require special disclosure.
 
@@ -381,7 +381,7 @@ When submitting apps using Despia Local Server:
 
 ### The `local.json` Manifest
 
-The `despia/local.json` manifest generated by this plugin serves as an asset inventory for Despia Local Server. It contains a complete list of all assets that need to be cached locally, enabling:
+The `despia/local.json` manifest generated by this plugin serves as an asset inventory for Despia's local server. It contains a complete list of all assets that need to be cached locally, enabling:
 
 - **Complete Asset Discovery**: Ensures all files (JS, CSS, images, fonts, HTML) are properly cached
 - **Efficient Updates**: Allows Despia to determine which assets have changed between builds
