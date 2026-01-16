@@ -27,11 +27,12 @@ export function despiaLocalSvelteKit(options = {}) {
       
       for (const outputDir of outputDirs) {
         try {
-          const paths = generateManifest({
+          const manifest = generateManifest({
             outputDir,
             entryHtml
           });
-          console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
+          const entryInfo = manifest.entry ? ` and entry: ${manifest.entry}` : '';
+          console.log(`✓ Generated despia/local.json with ${manifest.assets.length} assets${entryInfo}`);
           return; // Success, exit
         } catch (error) {
           // Try next directory

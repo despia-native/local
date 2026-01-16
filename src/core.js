@@ -53,7 +53,7 @@ export function collectFiles(dir, baseDir = dir) {
  * @param {string[]} options.additionalPaths - Additional paths to include
  * @param {boolean} options.skipEntryHtml - Skip adding entry HTML to manifest (for SSR apps)
  * @param {string} options.manifestOutputPath - Custom path for manifest file (default: outputDir/despia/local.json)
- * @returns {string[]} Array of all asset paths
+ * @returns {{entry: string|null, assets: string[]}} Object with entry path and assets array
  */
 export function generateManifest({ outputDir, entryHtml = 'index.html', additionalPaths = [], skipEntryHtml = false, manifestOutputPath = null }) {
   const outputPath = resolve(process.cwd(), outputDir);
@@ -77,16 +77,27 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
     assetPaths.add(normalizedPath);
   });
   
+  // Determine entry path
+  const entryPath = entryHtml.startsWith('/') 
+    ? entryHtml 
+    : '/' + entryHtml;
+  
   // Ensure entry HTML is included (unless skipped for SSR apps)
   if (!skipEntryHtml) {
-    const entryPath = entryHtml.startsWith('/') 
-      ? entryHtml 
-      : '/' + entryHtml;
     assetPaths.add(entryPath);
   }
   
-  // Convert to sorted array
-  const sortedPaths = Array.from(assetPaths).sort();
+  // Separate entry from other assets
+  const hasEntry = assetPaths.has(entryPath) && !skipEntryHtml;
+  const assets = Array.from(assetPaths)
+    .filter(path => path !== entryPath || skipEntryHtml)
+    .sort();
+  
+  // Create manifest object
+  const manifest = {
+    entry: hasEntry ? entryPath : null,
+    assets: assets
+  };
   
   // Create directory for manifest if it doesn't exist
   const manifestDir = manifestOutputPath 
@@ -96,9 +107,9 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
     mkdirSync(manifestDir, { recursive: true });
   }
   
-  // Write formatted JSON array
-  const jsonContent = JSON.stringify(sortedPaths, null, 2);
+  // Write formatted JSON object
+  const jsonContent = JSON.stringify(manifest, null, 2);
   writeFileSync(manifestPath, jsonContent, 'utf-8');
   
-  return sortedPaths;
+  return manifest;
 }

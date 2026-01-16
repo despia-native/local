@@ -33,12 +33,13 @@ export function despiaLocalPlugin(options = {}) {
       }
       
       try {
-        const paths = generateManifest({ 
+        const manifest = generateManifest({ 
           outputDir, 
           entryHtml,
           additionalPaths 
         });
-        console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
+        const entryInfo = manifest.entry ? ` and entry: ${manifest.entry}` : '';
+        console.log(`✓ Generated despia/local.json with ${manifest.assets.length} assets${entryInfo}`);
       } catch (error) {
         console.error('Error generating despia/local.json:', error.message);
       }

@@ -45,11 +45,12 @@ export default function DespiaLocalModule(moduleOptions) {
     
     for (const dir of altDirs) {
       try {
-        const paths = generateManifest({
+        const manifest = generateManifest({
           outputDir: dir,
           entryHtml: options.entryHtml
         });
-        console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
+        const entryInfo = manifest.entry ? ` and entry: ${manifest.entry}` : '';
+        console.log(`✓ Generated despia/local.json with ${manifest.assets.length} assets${entryInfo}`);
         generated = true;
         break;
       } catch (e) {

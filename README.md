@@ -643,16 +643,21 @@ All plugins accept the following options:
 
 ## Output Format
 
-The generated `despia/local.json` file contains a sorted JSON array of root-relative paths:
+The generated `despia/local.json` file contains an object with the entry HTML path and a sorted array of asset paths:
 
 ```json
-[
-  "/assets/app.abc123.css",
-  "/assets/app.def456.js",
-  "/assets/logo.xyz789.png",
-  "/index.html"
-]
+{
+  "entry": "/index.html",
+  "assets": [
+    "/assets/app.abc123.css",
+    "/assets/app.def456.js",
+    "/assets/logo.xyz789.png"
+  ]
+}
 ```
+
+- **`entry`**: The entry HTML file path (e.g., `/index.html`). This is `null` if `skipEntryHtml` is enabled (for SSR apps).
+- **`assets`**: A sorted array of all asset paths (excluding the entry file).
 
 ## Examples
 
@@ -743,8 +748,8 @@ export default defineConfig({
 2. **Scan Output Directory** - Recursively scans the build output directory for all files
 3. **Collect Asset Paths** - Collects paths from both the build tool's bundle metadata and file system
 4. **Normalize Paths** - Converts all paths to root-relative format (starting with `/`)
-5. **Include Entry HTML** - Ensures the entry HTML file is always included
-6. **Sort & Write** - Sorts paths alphabetically and writes to `despia/local.json`
+5. **Separate Entry from Assets** - Identifies the entry HTML file and separates it from other assets
+6. **Sort & Write** - Sorts asset paths alphabetically and writes object format `{ entry, assets }` to `despia/local.json`
 
 The generated manifest is then used by Despia during app hydration and updates to ensure all assets are properly cached for offline operation.
 

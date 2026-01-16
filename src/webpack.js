@@ -93,8 +93,20 @@ class DespiaLocalPlugin {
           this.scanPublicDir(this.options.publicDir, this.options.publicDir, assets);
         }
         
-        // 3. Generate sorted array (Despia format - just a JSON array)
-        const manifest = JSON.stringify([...assets].sort(), null, 2);
+        // 3. Separate entry from other assets and generate object format
+        const entryPath = this.options.entryHtml.startsWith('/') 
+          ? this.options.entryHtml 
+          : '/' + this.options.entryHtml;
+        const hasEntry = assets.has(entryPath) && !this.options.skipEntryHtml;
+        const assetList = Array.from(assets)
+          .filter(path => path !== entryPath || this.options.skipEntryHtml)
+          .sort();
+        
+        const manifestObj = {
+          entry: hasEntry ? entryPath : null,
+          assets: assetList
+        };
+        const manifest = JSON.stringify(manifestObj, null, 2);
         
         // 4. Inject into webpack output at despia/local.json
         const manifestPath = this.options.manifestPath || 'despia/local.json';
@@ -103,7 +115,7 @@ class DespiaLocalPlugin {
           size: () => Buffer.byteLength(manifest, 'utf8')
         };
         
-        console.log(`✓ Injected despia/local.json into build with ${assets.size} assets`);
+        console.log(`✓ Injected despia/local.json into build with ${assetList.length} assets${hasEntry ? ` and entry: ${entryPath}` : ''}`);
       } else {
         // Traditional mode: Write to filesystem (for other bundlers)
         const additionalPaths = new Set();
@@ -134,13 +146,14 @@ class DespiaLocalPlugin {
         
         try {
           const outputPath = compilation.compiler.outputPath || this.options.outDir;
-          const paths = generateManifest({
+          const manifest = generateManifest({
             outputDir: outputPath,
             entryHtml: this.options.entryHtml,
             additionalPaths: Array.from(additionalPaths),
             skipEntryHtml: this.options.skipEntryHtml
           });
-          console.log(`✓ Generated despia/local.json with ${paths.length} assets`);
+          const entryInfo = manifest.entry ? ` and entry: ${manifest.entry}` : '';
+          console.log(`✓ Generated despia/local.json with ${manifest.assets.length} assets${entryInfo}`);
         } catch (error) {
           console.error('Error generating despia/local.json:', error.message);
         }
