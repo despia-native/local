@@ -649,6 +649,7 @@ The generated `despia/local.json` file contains an object with the entry HTML pa
 {
   "entry": "/index.html",
   "assets": [
+    "/index.html",
     "/assets/app.abc123.css",
     "/assets/app.def456.js",
     "/assets/logo.xyz789.png"
@@ -656,8 +657,8 @@ The generated `despia/local.json` file contains an object with the entry HTML pa
 }
 ```
 
-- **`entry`**: The entry HTML file path (e.g., `/index.html`). **Required** - Local apps always need an entry point for client-side rendering. When `skipEntryHtml` is enabled, the entry is still required in the manifest but won't be included in the `assets` array.
-- **`assets`**: A sorted array of all asset paths (excluding the entry file).
+- **`entry`**: The entry HTML file path (e.g., `/index.html`). **Required** - Local apps always need an entry point for client-side rendering. The entry path is also included in the `assets` array (unless `skipEntryHtml` is enabled).
+- **`assets`**: A sorted array of all asset paths, **including the entry file**. When `skipEntryHtml` is enabled, the entry is still required in the manifest but won't be included in the `assets` array.
 
 ## Examples
 
@@ -748,7 +749,7 @@ export default defineConfig({
 2. **Scan Output Directory** - Recursively scans the build output directory for all files
 3. **Collect Asset Paths** - Collects paths from both the build tool's bundle metadata and file system
 4. **Normalize Paths** - Converts all paths to root-relative format (starting with `/`)
-5. **Separate Entry from Assets** - Identifies the entry HTML file and separates it from other assets
+5. **Include Entry in Assets** - Identifies the entry HTML file and includes it in the assets array (unless `skipEntryHtml` is enabled)
 6. **Sort & Write** - Sorts asset paths alphabetically and writes object format `{ entry, assets }` to `despia/local.json`
 
 The generated manifest is then used by Despia during app hydration and updates to ensure all assets are properly cached for offline operation.
