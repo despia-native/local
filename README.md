@@ -4,7 +4,7 @@ Universal build plugin to generate `despia/local.json` manifest for [Despia](htt
 
 **Note**: Despia's local server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia's local server is for developers who need extra performance and full true native offline support.
 
-**Store Compliant**: Despia's local server is fully compliant with Apple App Store and Google Play Store guidelines. It downloads and caches web content (HTML, CSS, JavaScript) for offline display in a WebView—identical to how web browsers work. No native code or executables are downloaded. See [Store Compliance & Security](#store-compliance--security) section for detailed compliance information.
+**Store Compliant**: Despia's local server is fully compliant with Apple App Store and Google Play Store guidelines. It downloads and caches web content (HTML, CSS, JavaScript) for offline display in a WebView - identical to how web browsers work. No native code or executables are downloaded. See [Store Compliance & Security](#store-compliance--security) section for detailed compliance information.
 
 ## Features
 
@@ -155,7 +155,7 @@ Despia's local server complies with this guideline because:
    - Binary behavior
    - System integration
 
-   **However**, the web UI can be updated to use existing native APIs in new ways. For example, if Face ID is already implemented in the native code and exposed through the WebView bridge, the web UI can be updated to call Face ID from new parts of the app. This is compliant because the native capability already exists in the submitted binary—only the web UI's usage of it changes.
+   **However**, the web UI can be updated to use existing native APIs in new ways. For example, if Face ID is already implemented in the native code and exposed through the WebView bridge, the web UI can be updated to call Face ID from new parts of the app. This is compliant because the native capability already exists in the submitted binary - only the web UI's usage of it changes.
 
    **Note**: This follows the same pattern as [Expo](https://expo.dev), which has been generally accepted by app stores. However, Apple's interpretation of "feature changes" under Guideline 3.3.2 is subjective, and your app could still face review challenges. It's recommended to be conservative with updates that significantly change app behavior, even when using existing native APIs.
 
@@ -183,7 +183,7 @@ Despia's local server complies with this policy because:
 
 4. **Sandboxed Execution**: All web content executes within the WebView's security sandbox, with permissions and capabilities fixed at APK submission time.
 
-   **However**, the web UI can be updated to use existing native APIs in new ways. For example, if biometric authentication is already implemented in the native code and exposed through the WebView bridge, the web UI can be updated to call it from new parts of the app. This is compliant because the native capability already exists in the submitted APK—only the web UI's usage of it changes.
+   **However**, the web UI can be updated to use existing native APIs in new ways. For example, if biometric authentication is already implemented in the native code and exposed through the WebView bridge, the web UI can be updated to call it from new parts of the app. This is compliant because the native capability already exists in the submitted APK - only the web UI's usage of it changes.
 
 **This approach is explicitly permitted** under Play Store policies, as evidenced by:
 - Chrome and other browsers rendering web content
