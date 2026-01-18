@@ -87,9 +87,9 @@ export function generateManifest({ outputDir, entryHtml = 'index.html', addition
     assetPaths.add(entryPath);
   }
   
-  // Separate entry from other assets
+  // Include all assets (entry is included in assets array)
   const assets = Array.from(assetPaths)
-    .filter(path => path !== entryPath || skipEntryHtml)
+    .filter(path => !skipEntryHtml || path !== entryPath)
     .sort();
   
   // Create manifest object (entry is always required for local client-side apps)

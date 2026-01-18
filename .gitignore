@@ -11,3 +11,5 @@ build/
 .env.local
 coverage/
 .nyc_output/
+.despia-temp/
+.despia-next.config.js

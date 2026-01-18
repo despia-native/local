@@ -93,13 +93,19 @@ class DespiaLocalPlugin {
           this.scanPublicDir(this.options.publicDir, this.options.publicDir, assets);
         }
         
-        // 3. Separate entry from other assets and generate object format
+        // 3. Generate object format (entry is included in assets array)
         // Entry is always required for local client-side apps
         const entryPath = this.options.entryHtml.startsWith('/') 
           ? this.options.entryHtml 
           : '/' + this.options.entryHtml;
+        
+        // Ensure entry is in assets if not skipped
+        if (!this.options.skipEntryHtml) {
+          assets.add(entryPath);
+        }
+        
         const assetList = Array.from(assets)
-          .filter(path => path !== entryPath || this.options.skipEntryHtml)
+          .filter(path => !this.options.skipEntryHtml || path !== entryPath)
           .sort();
         
         const manifestObj = {
