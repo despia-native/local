@@ -1,5 +1,15 @@
 # @despia/local
 
+> ### Part of Despia Convert
+>
+> This repository supports **Despia Convert** and Despia V4 WebView applications. Despia Convert is the fastest way to turn an existing web application into an iOS or Android app while keeping the existing web codebase.
+>
+> This project is actively supported for Convert and WebView-based applications.
+>
+> For projects that require fully native UI and native rendering, use **DSX Native**, Despia's native-first platform (SwiftUI on iOS, Jetpack Compose on Android). Convert applications can migrate to DSX Native later if deeper native UI or performance is required. Despia does not charge a migration fee.
+>
+> Current documentation: [docs.despia.com](https://docs.despia.com)
+
 Universal build plugin to generate `despia/local.json` manifest for [Despia](https://despia.com) web-native apps. This manifest enables Despia's local server, which runs your web app from a local HTTP server on-device, providing full offline functionality with seamless updates.
 
 **Note**: Despia's local server is optional. Normally, the Despia runtime can run your web app directly from a URL. Despia's local server is for developers who need extra performance and full true native offline support.
